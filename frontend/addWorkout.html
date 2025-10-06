@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log Workout - Fitness Tracker</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <style>
+    .form-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+      font-weight: 500;
+      color: #495057;
+      margin-bottom: 0.5rem;
+    }
+    
+    .input-group-text {
+      background-color: #f8f9fa;
+      color: #6c757d;
+    }
+    
+    .btn-submit {
+      background-color: #4361ee;
+      border: none;
+      padding: 0.75rem 2rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .btn-submit:hover {
+      background-color: #3a56d4;
+      transform: translateY(-2px);
+    }
+    
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+    
+    .btn-back {
+      color: #6c757d;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      transition: color 0.2s;
+    }
+    
+    .btn-back:hover {
+      color: #4361ee;
+    }
+    
+    .workout-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <div class="form-container">
+      <div class="text-center mb-4">
+        <h2><i class="fas fa-dumbbell me-2"></i>Log Workout</h2>
+        <p class="text-muted">Track your fitness activities and stay motivated</p>
+      </div>
+      
+      <form id="workoutForm">
+        <div class="form-group">
+          <label class="form-label">Workout Type</label>
+          <select class="form-control form-select" id="exerciseType" name="type" required>
+            <option value="" disabled selected>Select workout type</option>
+            <option value="Running"><i class="fas fa-running me-2"></i>Running</option>
+            <option value="Cycling"><i class="fas fa-biking me-2"></i>Cycling</option>
+            <option value="Gym"><i class="fas fa-dumbbell me-2"></i>Gym</option>
+            <option value="Yoga"><i class="fas fa-spa me-2"></i>Yoga</option>
+            <option value="Swimming"><i class="fas fa-swimmer me-2"></i>Swimming</option>
+            <option value="Walking"><i class="fas fa-walking me-2"></i>Walking</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Duration (minutes)</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="far fa-clock"></i></span>
+            <input type="number" class="form-control" id="duration" name="duration" placeholder="e.g. 30" min="1" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Calories Burned</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-fire"></i></span>
+            <input type="number" class="form-control" id="calories" name="calories" placeholder="e.g. 250" min="1" required readonly>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Date & Time</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+            <input type="datetime-local" class="form-control" name="workoutDate" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Notes (Optional)</label>
+          <textarea class="form-control" name="notes" rows="3" placeholder="How did it go? Any additional notes?"></textarea>
+        </div>
+        
+        <div class="d-grid gap-2 mt-4">
+          <button type="submit" class="btn btn-primary btn-lg btn-submit">
+            <span class="btn-text">Log Workout</span>
+            <span class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true"></span>
+          </button>
+          <a href="workouts.html" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Workouts
+          </a>
+        </div>
+        <div id="alertContainer" class="mt-3"></div>
+      </form>
+      
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Custom Scripts -->
+  <script src="js/navbar.js" defer></script>
+  <script src="js/config.js"></script>
+  <script>
+    // Calorie calculation factors (calories per minute)
+    const CALORIE_FACTORS = {
+      'running': 10,
+      'cycling': 8,
+      'swimming': 7,
+      'walking': 5,
+      'weightlifting': 3,
+      'hiit': 12,
+      'yoga': 3,
+      'default': 5
+    };
+    
+    // Calculate calories based on exercise type and duration
+    function calculateCalories() {
+      const exerciseType = document.getElementById('exerciseType').value;
+      const duration = parseFloat(document.getElementById('duration').value) || 0;
+      
+      // Get calorie factor based on exercise type, default to 5 if not found
+      const factor = CALORIE_FACTORS[exerciseType.toLowerCase()] || CALORIE_FACTORS.default;
+      
+      // Calculate calories (factor * duration in minutes)
+      const calories = Math.round(factor * duration);
+      
+      // Update the calories field
+      document.getElementById('calories').value = calories || 0;
+    }
+    
+    // Function to show alerts
+    function showAlert(message, type = 'danger') {
+      const alertContainer = document.getElementById('alertContainer');
+      alertContainer.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+          <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} me-2"></i>
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      `;
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Add event listeners after DOM is loaded
+      document.getElementById('exerciseType').addEventListener('change', calculateCalories);
+      document.getElementById('duration').addEventListener('input', calculateCalories);
+      
+      // Initialize calories on page load
+      calculateCalories();
+      // Check if user is logged in
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      if (!isLoggedIn) {
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      // Set default date/time to now
+      const setDateTimeNow = () => {
+        const now = new Date();
+        // Format to YYYY-MM-DDThh:mm
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        
+        const dateTimeInput = document.querySelector('input[type="datetime-local"]');
+        if (dateTimeInput) {
+          dateTimeInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+          dateTimeInput.max = `${year}-${month}-${day}T${hours}:${minutes}`; // Prevent future dates
+        }
+      };
+      
+      setDateTimeNow();
+      
+      // Form submission
+      const form = document.getElementById('workoutForm');
+      const alertContainer = document.getElementById('alertContainer');
+      
+      if (form) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const submitText = submitBtn.querySelector('.btn-text');
+          const submitSpinner = submitBtn.querySelector('.spinner-border');
+          
+          try {
+            // Show loading state
+            submitBtn.disabled = true;
+            submitText.textContent = 'Saving...';
+            submitSpinner.classList.remove('d-none');
+            
+            // Get form data
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Convert numeric fields to numbers and validate
+            data.duration = parseFloat(data.duration);
+            data.calories = parseFloat(data.calories);
+            
+            if (isNaN(data.duration) || data.duration <= 0) {
+              throw new Error('Please enter a valid duration');
+            }
+            
+            // Add user ID
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+              throw new Error('User not authenticated');
+            }
+            
+            data.userId = userId;
+            
+            // Send data to server
+            const response = await fetch(getApiUrl(API_CONFIG.ENDPOINTS.WORKOUTS), {
+              method: 'POST',
+              headers: getAuthHeaders(),
+              body: JSON.stringify(data)
+            });
+            
+            const responseData = await response.json();
+            
+            if (!response.ok) {
+              // Try to get error message from response
+              const errorMsg = responseData.message || 
+                             responseData.error || 
+                             'Failed to save workout. Please try again.';
+              throw new Error(errorMsg);
+            }
+            
+            // Show success message
+            showAlert('Workout saved successfully! Redirecting...', 'success');
+            
+            // Scroll to show success message
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Redirect to index.html after 1.5 seconds
+            setTimeout(() => {
+              window.location.href = 'index.html';
+            }, 1500);
+            
+          } catch (error) {
+            console.error('Error saving workout:', error);
+            
+            // Show error message
+            alertContainer.innerHTML = `
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                ${error.message || 'Failed to save workout. Please try again.'}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            `;
+            
+            // Scroll to show error message
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+          } finally {
+            // Reset button state
+            submitBtn.disabled = false;
+            submitText.textContent = 'Log Workout';
+            submitSpinner.classList.add('d-none');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+const express = require('express');
+const router = express.Router();
+const { check } = require('express-validator');
+const auth = require('../middleware/auth');
+const challengeController = require('../controllers/challengeController');
+
+// Validation middleware
+const createChallengeValidation = [
+    check('title', 'Title is required').not().isEmpty(),
+    check('description', 'Description is required').not().isEmpty(),
+    check('challengeType', 'Please provide a valid challenge type')
+        .isIn(['steps', 'workouts', 'distance', 'calories', 'active_minutes']),
+    check('targetValue', 'Please provide a valid target value').isNumeric().isInt({ min: 1 }),
+    check('startDate', 'Please provide a valid start date').isISO8601(),
+    check('endDate', 'Please provide a valid end date').isISO8601()
+];
+
+const updateProgressValidation = [
+    check('progress', 'Please provide a valid progress value').isNumeric().isInt({ min: 0 })
+];
+
+// Public routes
+router.get('/', challengeController.getChallenges);
+router.get('/:id', challengeController.getChallenge);
+
+// Protected routes (require authentication)
+router.use(auth);
+
+// Challenge management
+router.post('/', createChallengeValidation, challengeController.createChallenge);
+router.get('/user/me', challengeController.getUserChallenges);
+router.post('/:id/join', challengeController.joinChallenge);
+router.put('/:id/progress', updateProgressValidation, challengeController.updateProgress);
+router.delete('/:id', challengeController.deleteChallenge);
+
+module.exports = router;

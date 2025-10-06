@@ -1,0 +1,126 @@
+/* Navbar Styling */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.8rem 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand i {
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    border-radius: 4px;
+    margin: 0 2px;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+}
+
+.nav-link i {
+    font-size: 1.1rem;
+    margin-right: 0.25rem;
+}
+
+.nav-link:hover, 
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.dropdown-item {
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-item i {
+    width: 20px;
+    text-align: center;
+    margin-right: 0.5rem;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Auth buttons */
+#auth-buttons .btn {
+    font-weight: 500;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+}
+
+#auth-buttons .btn i {
+    font-size: 0.9rem;
+    margin-right: 0.3rem;
+}
+
+/* Active link highlighting */
+.navbar-nav .nav-link.active {
+    font-weight: 600;
+    color: #fff !important;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        padding: 1rem 0;
+    }
+    
+    .navbar-nav {
+        margin-bottom: 1rem;
+    }
+    
+    .nav-link {
+        padding: 0.5rem 0 !important;
+        margin: 2px 0;
+    }
+    
+    #auth-buttons {
+        padding-top: 0.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    #auth-buttons .btn {
+        width: 100%;
+        margin: 0.25rem 0;
+        justify-content: center;
+    }
+    
+    .dropdown-menu {
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+    }
+}
