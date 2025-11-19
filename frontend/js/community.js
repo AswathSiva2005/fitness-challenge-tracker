@@ -1,4 +1,4 @@
-const API = 'http://localhost:5000/api';
+const API = 'https://fitness-challenge-tracker.onrender.com/api';
 const token = localStorage.getItem('token');
 const currentUserId = localStorage.getItem('userId');
 
@@ -69,7 +69,7 @@ async function loadMessages(roomId) {
 
 function renderMessage(m) {
   const isMe = m.sender && (m.sender._id === currentUserId);
-  const avatar = (m.sender && m.sender.avatarUrl) ? (m.sender.avatarUrl.startsWith('http') ? m.sender.avatarUrl : `http://localhost:5000${m.sender.avatarUrl}`) : 'https://via.placeholder.com/36?text=%20';
+  const avatar = (m.sender && m.sender.avatarUrl) ? (m.sender.avatarUrl.startsWith('http') ? m.sender.avatarUrl : `https://fitness-challenge-tracker.onrender.com${m.sender.avatarUrl}`) : 'https://via.placeholder.com/36?text=%20';
   return `<div class="chat-message ${isMe ? 'me' : 'other'}">
     <img class="chat-avatar me-2 ms-2" src="${avatar}" />
     <div class="chat-bubble"><div class="small text-muted">${m.sender?.username || 'User'}</div>${escapeHtml(m.text || '')}</div>
@@ -79,7 +79,7 @@ function renderMessage(m) {
 function escapeHtml(s){return s.replace(/[&<>"]+/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]||c));}
 
 function initSocket() {
-  socket = io('http://localhost:5000', { auth: { token } });
+  socket = io('https://fitness-challenge-tracker.onrender.com', { auth: { token } });
   socket.on('newMessage', (m) => {
     if (m.room !== currentRoomId) return;
     const box = document.getElementById('messages');

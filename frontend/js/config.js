@@ -1,7 +1,7 @@
 // API Configuration
 const API_CONFIG = {
     // Backend server URL
-    BASE_URL: 'http://localhost:5000',  // Changed from 3000 to 5000 to match your backend
+    BASE_URL: 'https://fitness-challenge-tracker.onrender.com',
     ENDPOINTS: {
         WORKOUTS: '/api/workouts',
         PROGRESS: '/api/progress',

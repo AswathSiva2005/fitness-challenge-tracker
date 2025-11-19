@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://fitness-challenge-tracker.onrender.com/api';
 
 function authHeader() {
   return { 'Authorization': `Bearer ${localStorage.getItem('token') || ''}` };
@@ -32,7 +32,7 @@ async function loadProfile() {
     document.getElementById('weight').value = user.weight || '';
     document.getElementById('gender').value = user.gender || '';
     const img = document.getElementById('profileAvatar');
-    if (img) img.src = user.avatarUrl ? (user.avatarUrl.startsWith('http') ? user.avatarUrl : `http://localhost:5000${user.avatarUrl}`) : 'https://via.placeholder.com/96?text=%20';
+    if (img) img.src = user.avatarUrl ? (user.avatarUrl.startsWith('http') ? user.avatarUrl : `https://fitness-challenge-tracker.onrender.com${user.avatarUrl}`) : 'https://via.placeholder.com/96?text=%20';
     if (user.avatarUrl) localStorage.setItem('avatarUrl', user.avatarUrl);
     if (window.updateAuthButtons) window.updateAuthButtons();
   } catch (e) {
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (!res.ok) throw new Error(data.error || 'Upload failed');
       localStorage.setItem('avatarUrl', data.data.avatarUrl);
-      document.getElementById('profileAvatar').src = data.data.avatarUrl.startsWith('http') ? data.data.avatarUrl : `http://localhost:5000${data.data.avatarUrl}`;
+      document.getElementById('profileAvatar').src = data.data.avatarUrl.startsWith('http') ? data.data.avatarUrl : `https://fitness-challenge-tracker.onrender.com${data.data.avatarUrl}`;
       showMsg('Avatar updated');
       if (window.updateAuthButtons) window.updateAuthButtons();
     } catch (e) {

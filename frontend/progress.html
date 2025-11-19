@@ -512,7 +512,7 @@
     // Load workouts data
     async function loadWorkoutsData() {
       try {
-        const response = await fetch('http://localhost:5000/api/workouts', {
+        const response = await fetch('https://fitness-challenge-tracker.onrender.com/api/workouts', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
           }

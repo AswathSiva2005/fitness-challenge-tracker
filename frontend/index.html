@@ -607,7 +607,7 @@
         if (!userId || !token) return;
 
         // Load workouts
-        const workoutsResponse = await fetch('http://localhost:5000/api/workouts', {
+        const workoutsResponse = await fetch('https://fitness-challenge-tracker.onrender.com/api/workouts', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -625,7 +625,7 @@
         }
 
         // Load challenges
-        const challengesResponse = await fetch('http://localhost:5000/api/challenges', {
+        const challengesResponse = await fetch('https://fitness-challenge-tracker.onrender.com/api/challenges', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -660,7 +660,7 @@
         const activityList = document.getElementById('recentActivityList');
         
         // Load recent workouts
-        const workoutsResponse = await fetch('http://localhost:5000/api/workouts', {
+        const workoutsResponse = await fetch('https://fitness-challenge-tracker.onrender.com/api/workouts', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'

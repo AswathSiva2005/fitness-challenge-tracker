@@ -101,7 +101,7 @@ function updateAuthButtons() {
     let avatarUrl = localStorage.getItem('avatarUrl');
     const toAbsolute = (url) => {
         if (!url) return url;
-        return url.startsWith('http') ? url : `http://localhost:5000${url}`;
+        return url.startsWith('http') ? url : `https://fitness-challenge-tracker.onrender.com${url}`;
     };
 
     if (isLoggedIn && username) {
@@ -125,7 +125,7 @@ function updateAuthButtons() {
         if (!avatarUrl) {
             (async () => {
                 try {
-                    const res = await fetch('http://localhost:5000/api/users/me', {
+                    const res = await fetch('https://fitness-challenge-tracker.onrender.com/api/users/me', {
                         headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || ''}` }
                     });
                     if (res.status === 401) {
@@ -232,7 +232,7 @@ function updateAuthButtons() {
 // Load notifications
 async function loadNotifications() {
   try {
-    const response = await fetch('http://localhost:5000/api/notifications', {
+    const response = await fetch('https://fitness-challenge-tracker.onrender.com/api/notifications', {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
         'Content-Type': 'application/json'
@@ -316,7 +316,7 @@ async function loadNotifications() {
 // Mark notification as read
 async function markNotificationAsRead(notificationId) {
   try {
-    const response = await fetch(`http://localhost:5000/api/notifications/${notificationId}/read`, {
+    const response = await fetch(`https://fitness-challenge-tracker.onrender.com/api/notifications/${notificationId}/read`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
@@ -336,7 +336,7 @@ async function markNotificationAsRead(notificationId) {
 // Mark all notifications as read
 async function markAllNotificationsAsRead() {
   try {
-    const response = await fetch('http://localhost:5000/api/notifications/read-all', {
+    const response = await fetch('https://fitness-challenge-tracker.onrender.com/api/notifications/read-all', {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,

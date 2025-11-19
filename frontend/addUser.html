@@ -18,7 +18,7 @@
     document.getElementById("userForm").addEventListener("submit", async e => {
       e.preventDefault();
       const formData = Object.fromEntries(new FormData(e.target));
-      await fetch("http://localhost:5000/api/users", {
+      await fetch("https://fitness-challenge-tracker.onrender.com/api/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)

@@ -7,7 +7,7 @@ const joinChallengeBtn = document.getElementById('joinChallengeBtn');
 const saveProgressBtn = document.getElementById('saveProgressBtn');
 
 // API Base URL from config
-const API_BASE_URL = window.API_BASE_URL || 'http://localhost:5000/api';
+const API_BASE_URL = window.API_BASE_URL || 'https://fitness-challenge-tracker.onrender.com/api';
 const CHALLENGES_ENDPOINT = `${API_BASE_URL}/challenges`;
 
 // State

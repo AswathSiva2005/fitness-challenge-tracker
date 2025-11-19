@@ -1,6 +1,6 @@
 // Minimal floating chatbot widget with typing indicator and history
 (function() {
-  const API = 'http://localhost:5000/api/chatbot';
+  const API = 'https://fitness-challenge-tracker.onrender.com/api/chatbot';
   const token = localStorage.getItem('token');
 
   function authHeaders() {

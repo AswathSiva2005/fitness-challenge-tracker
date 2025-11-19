@@ -234,7 +234,7 @@
             data.userId = userId;
             
             // Send data to server
-            const response = await fetch('http://localhost:5000/api/progress', {
+            const response = await fetch('https://fitness-challenge-tracker.onrender.com/api/progress', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
